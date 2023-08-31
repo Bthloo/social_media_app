@@ -10,7 +10,9 @@ import '../api/models/all post response/PostsResponse.dart';
 class AllPostsViewModel extends Cubit<AllPostsState> {
   AllPostsViewModel() : super(AllPostsLoadingState());
 
-  void getAllPosts() async {
+  static AllPostsViewModel get(context) => BlocProvider.of(context);
+
+  getAllPosts() async {
     try {
       var response = await ApiManager.getAllPosts();
       //response.results;
