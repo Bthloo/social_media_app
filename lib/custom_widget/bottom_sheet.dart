@@ -10,11 +10,20 @@ import '../view model/create_comment_view_model.dart';
 import 'comment_item.dart';
 import 'dialog.dart';
 
-class AllCommentsWidget extends StatelessWidget {
+class AllCommentsWidget extends StatefulWidget {
   static const String routeName = 'fdf';
+
+  @override
+  State<AllCommentsWidget> createState() => _AllCommentsWidgetState();
+}
+
+class _AllCommentsWidgetState extends State<AllCommentsWidget> {
   final formkey = GlobalKey<FormState>();
+
   final commentController = TextEditingController();
+
   var allCommentsViewModel = AllCommentViewModel();
+
   var createCommentViewModel = CreateCommentViewModel();
 
   @override
@@ -123,7 +132,7 @@ class AllCommentsWidget extends StatelessWidget {
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.SNACKBAR,
                           timeInSecForIosWeb: 3,
-                          backgroundColor: Colors.red,
+                          backgroundColor: Colors.white,
                           textColor: Colors.black,
                           fontSize: 16.0);
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -179,6 +188,7 @@ class AllCommentsWidget extends StatelessWidget {
                           onPressed: () {
                             createComment(arrg, context);
                             commentController.clear();
+                            setState(() {});
                           },
                           icon: Icon(
                             Icons.send,

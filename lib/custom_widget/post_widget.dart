@@ -4,16 +4,20 @@ class PostWidget extends StatelessWidget {
   String? name;
   String? time;
   String? content;
-  num? numberOfComments;
+
+  // num? numberOfComments;
+  // num? numberOfLikes;
   num? id;
 
-  PostWidget(
-      {super.key,
-      required this.name,
-      required this.content,
-      required this.time,
-      required this.id,
-      required this.numberOfComments});
+  PostWidget({
+    super.key,
+    required this.name,
+    required this.content,
+    required this.time,
+    required this.id,
+    //required this.numberOfComments,
+    //required this.numberOfLikes,
+  });
 
   @override
   Widget build(BuildContext context) {
