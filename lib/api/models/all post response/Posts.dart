@@ -13,6 +13,7 @@ class Posts {
     this.createdAt,
     this.updatedAt,
     this.user,
+    this.commentCount,
   });
 
   Posts.fromJson(dynamic json) {
@@ -20,6 +21,8 @@ class Posts {
     content = json['content'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
+    commentCount = json['commentCount'];
+    likesCount = json['likesCount'];
     user = json['user'] != null ? User.fromJson(json['user']) : null;
   }
 
@@ -28,6 +31,8 @@ class Posts {
   String? createdAt;
   String? updatedAt;
   User? user;
+  String? commentCount;
+  String? likesCount;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -35,6 +40,8 @@ class Posts {
     map['content'] = content;
     map['createdAt'] = createdAt;
     map['updatedAt'] = updatedAt;
+    map['commentCount'] = commentCount;
+    map['likesCount'] = likesCount;
     if (user != null) {
       map['user'] = user?.toJson();
     }

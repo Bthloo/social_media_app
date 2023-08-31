@@ -7,8 +7,11 @@ import 'package:socila_app/api/models/create%20comment%20response/create_comment
 import 'package:socila_app/api/models/register%20request/RegisterRequest.dart';
 
 import 'models/all post response/PostsResponse.dart';
+import 'models/create post request/CreatePostRequest.dart';
+import 'models/create post response/CreatePostResponse.dart';
 import 'models/login request/LoginRequest.dart';
 import 'models/login response/LoginResponse.dart';
+import 'models/post like response/CreateLikeResponse.dart';
 import 'models/register response/RegisterResponse.dart';
 
 class ApiManager {
@@ -71,5 +74,32 @@ class ApiManager {
     var createCommentResponse =
         CreateCommentResponse.fromJson(jsonDecode(response.body));
     return createCommentResponse;
+  }
+
+  static Future<CreateLikeResponse> createLike(num postId, String token) async {
+    var uri = Uri.https(baseUrl, "likes", {'postId': "$postId"});
+    var response = await http.post(uri, headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $token"
+    });
+
+    var createLikeResponse =
+        CreateLikeResponse.fromJson(jsonDecode(response.body));
+    return createLikeResponse;
+  }
+
+  static Future<CreatePostResponse> createPost(
+      String content, String token) async {
+    var uri = Uri.https(baseUrl, "posts");
+    var requestBody = CreatePostRequest(content: content);
+    var response = await http.post(uri,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token"
+        },
+        body: jsonEncode(requestBody));
+    var createPostResponse =
+        CreatePostResponse.fromJson(jsonDecode(response.body));
+    return createPostResponse;
   }
 }
