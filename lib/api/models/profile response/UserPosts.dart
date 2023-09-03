@@ -1,23 +1,27 @@
 import 'User.dart';
 
-/// id : 1
-/// content : "test user 1"
-/// createdAt : "2023-08-29T17:41:09.171Z"
-/// updatedAt : "2023-08-29T17:41:09.171Z"
-/// user : {"fullName":"test user1","id":2}
+/// id : 26
+/// content : "dsdsd"
+/// createdAt : "2023-09-02T19:16:27.936Z"
+/// updatedAt : "2023-09-02T19:16:27.936Z"
+/// commentCount : "0"
+/// likesCount : "0"
+/// likedByUser : false
+/// user : {"id":2,"fullName":"test user1"}
 
-class Posts {
-  Posts(
-      {this.id,
-      this.content,
-      this.createdAt,
-      this.updatedAt,
-      this.user,
-      this.commentCount,
-      this.likedByUser,
-      this.likesCount});
+class UserPosts {
+  UserPosts({
+    this.id,
+    this.content,
+    this.createdAt,
+    this.updatedAt,
+    this.commentCount,
+    this.likesCount,
+    this.likedByUser,
+    this.user,
+  });
 
-  Posts.fromJson(dynamic json) {
+  UserPosts.fromJson(dynamic json) {
     id = json['id'];
     content = json['content'];
     createdAt = json['createdAt'];
@@ -32,10 +36,10 @@ class Posts {
   String? content;
   String? createdAt;
   String? updatedAt;
-  User? user;
   String? commentCount;
   String? likesCount;
   bool? likedByUser;
+  User? user;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

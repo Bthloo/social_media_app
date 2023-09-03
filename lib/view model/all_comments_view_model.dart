@@ -10,9 +10,9 @@ import '../api/api_manager.dart';
 class AllCommentViewModel extends Cubit<AllCommentState> {
   AllCommentViewModel() : super(AllCommentLoadingState());
 
-  void getAllPosts(num postId) async {
+  void getAllComments(num postId, String token) async {
     try {
-      var response = await ApiManager.getAllComments(postId);
+      var response = await ApiManager.getAllComments(postId, token);
       //response.results;
       emit(AllCommentSuccessState(response));
     } on TimeoutException catch (ex) {

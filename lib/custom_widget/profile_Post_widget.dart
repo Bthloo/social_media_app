@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
 
-class PostWidget extends StatelessWidget {
+class ProfilePostWidget extends StatelessWidget {
   String? name;
   String? time;
   String? content;
+  Function() ontap;
 
   // num? numberOfComments;
   // num? numberOfLikes;
   num? id;
 
-  PostWidget({
-    super.key,
-    required this.name,
-    required this.content,
-    required this.time,
-    required this.id,
-    //required this.numberOfComments,
-    //required this.numberOfLikes,
-  });
+  ProfilePostWidget(
+      {super.key,
+      required this.name,
+      required this.content,
+      required this.time,
+      required this.id,
+      required this.ontap
+      //required this.numberOfComments,
+      //required this.numberOfLikes,
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +55,20 @@ class PostWidget extends StatelessWidget {
                   )
                 ],
               ),
+              Row(
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      //ontap;
+                    },
+                    child: Text('Edit'),
+                  ),
+                  TextButton(
+                    onPressed: ontap,
+                    child: Text('Delete'),
+                  ),
+                ],
+              )
             ],
           ),
           SizedBox(

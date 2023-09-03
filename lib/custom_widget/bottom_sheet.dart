@@ -31,7 +31,7 @@ class _AllCommentsWidgetState extends State<AllCommentsWidget> {
     AuthProvider userProvider =
         Provider.of<AuthProvider>(context, listen: false);
     var arrg = ModalRoute.of(context)?.settings.arguments as num;
-    allCommentsViewModel.getAllPosts(arrg);
+    allCommentsViewModel.getAllComments(arrg, userProvider.token ?? '');
 
     return Scaffold(
       appBar: AppBar(
@@ -65,8 +65,10 @@ class _AllCommentsWidgetState extends State<AllCommentsWidget> {
                     ),
                   );
                 } else if (state is AllCommentErrorState) {
-                  return Text(
-                    state.error.toString(),
+                  return Expanded(
+                    child: Text(
+                      state.error.toString(),
+                    ),
                   );
                 } else if (state is AllCommentSuccessState) {
                   if (state.response.results?.comments?.length == 0) {
@@ -217,6 +219,6 @@ class _AllCommentsWidgetState extends State<AllCommentsWidget> {
     createCommentViewModel.createComment(
         content: commentController.text,
         postId: postId,
-        token: userProvider.currentUser?.accessToken ?? '');
+        token: userProvider.token ?? '');
   }
 }
