@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../api/api_manager.dart';
@@ -9,16 +7,18 @@ class DeletePostViewModel extends Cubit<DeletePostViewState> {
   DeletePostViewModel() : super(DeletePostInitialState());
 
   void deletePost({required num postId, required String token}) async {
+    var response = await ApiManager.deletePost(token: token, postId: postId);
     emit(DeletePostLoadingState(loadingMessage: 'Loading...'));
-    try {
-      var response = await ApiManager.deletePost(token: token, postId: postId);
-
-      emit(DeletePostSuccessState());
-    } on TimeoutException catch (ex) {
-      emit(DeletePostFailState(message: ex.toString()));
-    } catch (ex) {
-      emit(DeletePostFailState(message: 'Something Went Wrong \n $ex'));
-    }
+    // try {
+    //   var response = await ApiManager.deletePost(token: token, postId: postId);
+    //   if (response >= 200 && response < 300) {
+    //     emit(DeletePostSuccessState(response));
+    //   }
+    // } on TimeoutException catch (ex) {
+    //   emit(DeletePostFailState(message: ex.toString()));
+    // } catch (ex) {
+    //   emit(DeletePostFailState(message: 'Something Went Wrong \n $ex'));
+    // }
   }
 }
 
@@ -34,8 +34,9 @@ class DeletePostLoadingState extends DeletePostViewState {
 
 class DeletePostSuccessState extends DeletePostViewState {
   // DeletePostResponse? response;
+  int response;
 
-  DeletePostSuccessState();
+  DeletePostSuccessState(this.response);
 }
 
 class DeletePostFailState extends DeletePostViewState {

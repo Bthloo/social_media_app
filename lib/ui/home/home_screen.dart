@@ -12,7 +12,7 @@ import '../tabs/home_tab.dart';
 import '../tabs/profile_tab.dart';
 
 class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
 
   static const String routeName = 'home';
 
@@ -33,8 +33,9 @@ class HomeScreen extends StatelessWidget {
               bottomNavigationBar: BottomNavigationBar(
                 selectedItemColor: Colors.blueAccent,
                 showSelectedLabels: true,
-                unselectedIconTheme: IconThemeData(color: Colors.grey),
-                selectedIconTheme: IconThemeData(color: Colors.blueAccent),
+                unselectedIconTheme: const IconThemeData(color: Colors.grey),
+                selectedIconTheme:
+                    const IconThemeData(color: Colors.blueAccent),
                 currentIndex: AppCubit.get(context).currentTapIndex,
                 onTap: (index) {
                   AppCubit.get(context).changeIndex(index);
@@ -57,16 +58,18 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
               appBar: AppBar(
-                leading: IconButton(onPressed: () {}, icon: Icon(Icons.menu)),
+                leading:
+                    IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
                 actions: [
                   IconButton(
                       onPressed: () {
                         Navigator.pushNamed(context, CreatePost.routeName);
                       },
-                      icon: Icon(Icons.add)),
+                      icon: const Icon(Icons.add)),
                   IconButton(
-                      onPressed: () {}, icon: Icon(Icons.search_outlined)),
-                  IconButton(onPressed: () {}, icon: Icon(Icons.message)),
+                      onPressed: () {},
+                      icon: const Icon(Icons.search_outlined)),
+                  IconButton(onPressed: () {}, icon: const Icon(Icons.message)),
                 ],
                 title: const Text(
                   'فسبك',

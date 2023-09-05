@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class DialogUtilities {
   static void ShowLoadingDialog(BuildContext context, String message) {
-    showDialog(
+    showAdaptiveDialog(
         context: context,
-        builder: (BuildContext) {
-          return AlertDialog(
+        builder: (context) {
+          return AlertDialog.adaptive(
             content: Row(
               children: [
                 CircularProgressIndicator(),
@@ -26,13 +26,17 @@ class DialogUtilities {
 
   static void showMessage(BuildContext context, String message,
       {String? posstiveActionName,
-      VoidCallback? posstiveAction,
+      Function()? posstiveAction,
       String? nigaiveActionName,
-      VoidCallback? nigaiveAction,
+      Function()? nigaiveAction,
       bool dismissible = true}) {
     List<Widget> actions = [];
     if (posstiveActionName != null) {
       actions.add(TextButton(
+          style: const ButtonStyle(
+            overlayColor: MaterialStatePropertyAll(Colors.transparent),
+            //foregroundColor: MaterialStatePropertyAll(Colors.transparent)
+          ),
           onPressed: () {
             Navigator.pop(context);
             posstiveAction?.call();
@@ -41,16 +45,23 @@ class DialogUtilities {
     }
     if (nigaiveActionName != null) {
       actions.add(TextButton(
+          style: const ButtonStyle(
+            overlayColor: MaterialStatePropertyAll(Colors.transparent),
+            //foregroundColor: MaterialStatePropertyAll(Colors.transparent)
+          ),
           onPressed: () {
             Navigator.pop(context);
             nigaiveAction?.call();
           },
-          child: Text(nigaiveActionName)));
+          child: Text(
+            nigaiveActionName,
+            style: TextStyle(color: Colors.red),
+          )));
     }
-    showDialog(
+    showAdaptiveDialog(
       context: context,
-      builder: (BuildContext) {
-        return AlertDialog(
+      builder: (context) {
+        return AlertDialog.adaptive(
           content: Text(message),
           actions: actions,
         );
