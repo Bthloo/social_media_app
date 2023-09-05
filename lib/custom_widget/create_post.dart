@@ -6,13 +6,13 @@ import '../providers/auth_provider.dart';
 import '../view model/create_post_view_model.dart';
 import 'dialog.dart';
 
+var postController = TextEditingController();
+var viewModel = CreatePostViewModel();
+
 class CreatePost extends StatelessWidget {
   static const String routeName = 'post';
-  var PostController = TextEditingController();
 
-  CreatePost({super.key});
-
-  var viewModel = CreatePostViewModel();
+  const CreatePost({super.key});
 
   // var allPostviewModel = AllPostsViewModel();
   @override
@@ -21,7 +21,7 @@ class CreatePost extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create a Post'),
+        title: const Text('Create a Post'),
       ),
       body: BlocConsumer<CreatePostViewModel, CreatePostViewState>(
         builder: (context, state) {
@@ -30,23 +30,48 @@ class CreatePost extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                TextFormField(
-                  controller: PostController,
-                  decoration: InputDecoration(
-                    label: Text('Create a Post'),
+                Expanded(
+                  child: TextFormField(
+                    minLines: 1,
+                    maxLines: 100,
+                    controller: postController,
+                    decoration: const InputDecoration(
+                      label: Text('Create a Post'),
+                    ),
                   ),
                 ),
-                SizedBox(
-                  height: 10,
+                const SizedBox(
+                  height: 20,
                 ),
-                ElevatedButton(
-                    onPressed: () {
-                      viewModel.createPost(
-                          content: PostController.text,
-                          token: userProvider.token ?? '');
-                      //  allPostviewModel.getAllPosts();
-                    },
-                    child: const Text('Publish'))
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              const MaterialStatePropertyAll(Colors.blueAccent),
+                          shape: MaterialStatePropertyAll(
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)))),
+                      onPressed: () {
+                        viewModel.createPost(
+                            content: postController.text,
+                            token: userProvider.token ?? '');
+                        //  allPostviewModel.getAllPosts();
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          'Publish',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
+                        ),
+                      )),
+                ),
+                const SizedBox(
+                  height: 20,
+                )
               ],
             ),
           );

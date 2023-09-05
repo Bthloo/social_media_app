@@ -10,7 +10,6 @@ import 'package:socila_app/api/models/register%20request/RegisterRequest.dart';
 import 'models/all post response/PostsResponse.dart';
 import 'models/create post request/CreatePostRequest.dart';
 import 'models/create post response/CreatePostResponse.dart';
-import 'models/delete post response/DeletePostResponse.dart';
 import 'models/login request/LoginRequest.dart';
 import 'models/login response/LoginResponse.dart';
 import 'models/post like response/CreateLikeResponse.dart';
@@ -112,6 +111,7 @@ class ApiManager {
 
   static Future<ProfileResponse> getProfile(int id) async {
     var uri = Uri.https(baseUrl, "profile/$id");
+
     var response = await http.get(uri, headers: {
       "Content-Type": "application/json",
     });
@@ -119,15 +119,16 @@ class ApiManager {
     return profileResponse;
   }
 
-  static Future<DeletePostResponse> deletePost(
+  static Future<int> deletePost(
       {required num postId, required String token}) async {
     var uri = Uri.https(baseUrl, "posts", {'postId': "$postId"});
     var response = await http.delete(uri, headers: {
       "Content-Type": "application/json",
       "Authorization": "Bearer $token"
     });
-
-    var deletePost = DeletePostResponse.fromJson(jsonDecode(response.body));
-    return deletePost;
+    int statusCode = response.statusCode;
+    //var deletePost = DeletePostResponse.fromJson(jsonDecode(response.body));
+    print(statusCode);
+    return statusCode;
   }
 }

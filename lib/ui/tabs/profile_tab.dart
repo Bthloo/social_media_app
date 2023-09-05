@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
@@ -12,7 +13,6 @@ import '../../custom_widget/post_widget.dart';
 import '../../custom_widget/profile_Post_widget.dart';
 import '../../providers/auth_provider.dart';
 import '../../view model/create_like_view_model.dart';
-import '../../view model/delete_post_view_model.dart';
 
 class ProfileTab extends StatelessWidget {
   ProfileTab({super.key});
@@ -22,8 +22,6 @@ class ProfileTab extends StatelessWidget {
     AuthProvider userProvider = Provider.of<AuthProvider>(context);
     var viewModel = ProfileViewModel();
     viewModel.getProfile(userProvider.id ?? -2);
-    var deletePostViewModel = DeletePostViewModel();
-    //deleteCommentViewModel.deletePost(postId: , token: token)
     return RefreshIndicator(
       onRefresh: () {
         return viewModel.getProfile(userProvider.id ?? -2);
@@ -94,40 +92,41 @@ class ProfileTab extends StatelessWidget {
                           children: [
                             ProfilePostWidget(
                               ontap: () async {
+                                DialogUtilities.showMessage(
+                                  context,
+                                  "Are you sure you want to delete this post?",
+                                  nigaiveActionName: 'Delete',
+                                  posstiveActionName: "No",
+                                  nigaiveAction: () async {
+                                    var response = await ApiManager.deletePost(
+                                        postId: postdata.response.results
+                                                ?.userPosts?[index].id ??
+                                            -1,
+                                        token: userProvider.token ?? '');
+                                    if (response >= 200 && response < 300) {
+                                      Fluttertoast.showToast(
+                                          msg: "Post Deleted Successfully",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.SNACKBAR,
+                                          timeInSecForIosWeb: 3,
+                                          backgroundColor: Colors.white,
+                                          textColor: Colors.black,
+                                          fontSize: 16.0);
+                                      viewModel
+                                          .getProfile(userProvider.id ?? -2);
+                                    } else {
+                                      Fluttertoast.showToast(
+                                          msg: "Something Went Wrong ",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.SNACKBAR,
+                                          timeInSecForIosWeb: 3,
+                                          backgroundColor: Colors.white,
+                                          textColor: Colors.black,
+                                          fontSize: 16.0);
+                                    }
+                                  },
+                                );
                                 print('hhhhh');
-                                // deletePostViewModel.deletePost(
-                                //     postId: postdata.response.results?.userPosts?[index].id??-1,
-                                //     token: userProvider.token??'');
-                                //DialogUtilities.ShowLoadingDialog(context, 'Loading');
-                                var response = await ApiManager.deletePost(
-                                    token: userProvider.token ?? '',
-                                    postId: postdata.response.results
-                                            ?.userPosts?[index].id ??
-                                        -1);
-
-                                if (response.success == !false) {
-                                  DialogUtilities.showMessage(context, 'noo',
-                                      posstiveActionName: 'ok');
-                                  return;
-                                }
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                        backgroundColor: Colors.white,
-                                        duration: Duration(milliseconds: 300),
-                                        showCloseIcon: true,
-                                        closeIconColor: Colors.black,
-                                        shape: StadiumBorder(),
-                                        content: Text(
-                                          'Comment Created Successfully',
-                                          style: TextStyle(color: Colors.black),
-                                        )));
-
-                                //Navigator.pop(context);
-                                //  if(response.success == false){
-                                //    DialogUtilities.showMessage(context, 'noo',posstiveActionName: 'ok');
-                                //  }
-
-                                //DialogUtilities.showMessage(context, 'done');
                               },
                               id: postdata
                                   .response.results?.userPosts?[index].id,
@@ -215,4 +214,13 @@ class ProfileTab extends StatelessWidget {
 
     return action;
   }
+// void callAPis(String token,num postId){
+//   ApiManager.deletePost(
+//       token: token ?? '',
+//       postId: postId);
+//   if()
+// }
+//userProvider.token
+//postdata.response.results ?.userPosts?[index].id ??
+//             -1
 }
