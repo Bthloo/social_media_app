@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:socila_app/cubit/cubit.dart';
 import 'package:socila_app/custom_widget/create_post.dart';
 import 'package:socila_app/ui/tabs/notification_tab.dart';
 
 import '../../cubit/states.dart';
+import '../../providers/auth_provider.dart';
 import '../tabs/friends_tab.dart';
 import '../tabs/home_tab.dart';
 import '../tabs/profile_tab.dart';
@@ -17,6 +19,10 @@ class HomeScreen extends StatelessWidget {
 //var viewModel = AllPostsViewModel();
   @override
   Widget build(BuildContext context) {
+    var authProvider = Provider.of<AuthProvider>(context, listen: false);
+
+    authProvider.getToken(context);
+    //getToken(context);
     //  viewModel.getAllPosts();
     return BlocProvider(
       create: (context) => AppCubit(),

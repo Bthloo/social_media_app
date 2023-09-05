@@ -20,10 +20,10 @@ class HomeTab extends StatelessWidget {
   Widget build(BuildContext context) {
     AuthProvider userProvider =
         Provider.of<AuthProvider>(context, listen: false);
-    viewModel.getAllPosts();
+    viewModel.getAllPosts(userProvider.token ?? "");
     return RefreshIndicator(
       onRefresh: () {
-        return viewModel.getAllPosts();
+        return viewModel.getAllPosts(userProvider.token ?? "");
       },
       child: BlocBuilder<AllPostsViewModel, AllPostsState>(
         bloc: viewModel,

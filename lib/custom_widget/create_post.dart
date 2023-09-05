@@ -43,7 +43,7 @@ class CreatePost extends StatelessWidget {
                     onPressed: () {
                       viewModel.createPost(
                           content: PostController.text,
-                          token: userProvider.currentUser?.accessToken ?? '');
+                          token: userProvider.token ?? '');
                       //  allPostviewModel.getAllPosts();
                     },
                     child: const Text('Publish'))

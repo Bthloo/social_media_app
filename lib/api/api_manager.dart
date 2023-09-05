@@ -4,11 +4,13 @@ import 'package:http/http.dart' as http;
 import 'package:socila_app/api/models/all%20comments%20response/CommentsResponse.dart';
 import 'package:socila_app/api/models/create%20comment%20request/create_comment_request.dart';
 import 'package:socila_app/api/models/create%20comment%20response/create_comment_response.dart';
+import 'package:socila_app/api/models/profile%20response/ProfileResponse.dart';
 import 'package:socila_app/api/models/register%20request/RegisterRequest.dart';
 
 import 'models/all post response/PostsResponse.dart';
 import 'models/create post request/CreatePostRequest.dart';
 import 'models/create post response/CreatePostResponse.dart';
+import 'models/delete post response/DeletePostResponse.dart';
 import 'models/login request/LoginRequest.dart';
 import 'models/login response/LoginResponse.dart';
 import 'models/post like response/CreateLikeResponse.dart';
@@ -44,19 +46,24 @@ class ApiManager {
     return loginResponse;
   }
 
-  static Future<PostsResponse> getAllPosts() async {
+  static Future<PostsResponse> getAllPosts(String token) async {
     var uri = Uri.https(baseUrl, "posts");
-    var response =
-        await http.get(uri, headers: {"Content-Type": "application/json"});
+    var response = await http.get(uri, headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $token"
+    });
     var postsResponse = PostsResponse.fromJson(jsonDecode(response.body));
     return postsResponse;
   }
 
-  static Future<CommentsResponse> getAllComments(num postId) async {
+  static Future<CommentsResponse> getAllComments(
+      num postId, String token) async {
     var uri = Uri.https(baseUrl, "comments", {'postId': "$postId"});
 
-    var response =
-        await http.get(uri, headers: {"Content-Type": "application/json"});
+    var response = await http.get(uri, headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $token"
+    });
     var postsResponse = CommentsResponse.fromJson(jsonDecode(response.body));
     return postsResponse;
   }
@@ -101,5 +108,26 @@ class ApiManager {
     var createPostResponse =
         CreatePostResponse.fromJson(jsonDecode(response.body));
     return createPostResponse;
+  }
+
+  static Future<ProfileResponse> getProfile(int id) async {
+    var uri = Uri.https(baseUrl, "profile/$id");
+    var response = await http.get(uri, headers: {
+      "Content-Type": "application/json",
+    });
+    var profileResponse = ProfileResponse.fromJson(jsonDecode(response.body));
+    return profileResponse;
+  }
+
+  static Future<DeletePostResponse> deletePost(
+      {required num postId, required String token}) async {
+    var uri = Uri.https(baseUrl, "posts", {'postId': "$postId"});
+    var response = await http.delete(uri, headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $token"
+    });
+
+    var deletePost = DeletePostResponse.fromJson(jsonDecode(response.body));
+    return deletePost;
   }
 }

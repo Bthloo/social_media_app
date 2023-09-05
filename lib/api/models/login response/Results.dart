@@ -15,7 +15,7 @@ class LoginResults {
   }
 
   String? accessToken;
-  num? userId;
+  int? userId;
   String? userFullName;
 
   Map<String, dynamic> toJson() {

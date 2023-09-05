@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socila_app/providers/auth_provider.dart';
 
 import '../../custom_widget/custom_form_field.dart';
@@ -58,10 +59,22 @@ class LoginScreen extends StatelessWidget {
               } else if (state is LoginSuccessState) {
                 if (state.response?.success == true) {
                   DialogUtilities.showMessage(context, "Logedin Successfully",
-                      posstiveActionName: "ok", posstiveAction: () {
+                      posstiveActionName: "ok", posstiveAction: () async {
                     AuthProvider userProvider =
                         Provider.of<AuthProvider>(context, listen: false);
                     userProvider.currentUser = state.response?.results;
+
+                    //keepLogin(c);
+                    // final String? action = prefs.getString('action');
+                    final SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    await prefs.setString(
+                        'token', userProvider.currentUser?.accessToken ?? "");
+                    await prefs.setInt(
+                        "id", userProvider.currentUser?.userId ?? 0);
+                    userProvider.token = prefs.getString('token');
+                    userProvider.id = prefs.getInt('id');
+
                     Navigator.of(context)
                         .pushReplacementNamed(HomeScreen.routeName);
                   });
@@ -196,5 +209,10 @@ class LoginScreen extends StatelessWidget {
     }
     viewModel.login(
         email: emailController.text, password: passwordController.text);
+  }
+
+  static void keepLogin(String string) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('token', string);
   }
 }

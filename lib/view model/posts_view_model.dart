@@ -12,9 +12,9 @@ class AllPostsViewModel extends Cubit<AllPostsState> {
 
   static AllPostsViewModel get(context) => BlocProvider.of(context);
 
-  getAllPosts() async {
+  getAllPosts(String token) async {
     try {
-      var response = await ApiManager.getAllPosts();
+      var response = await ApiManager.getAllPosts(token);
       //response.results;
       emit(AllPostsSuccessState(response));
     } on TimeoutException catch (ex) {
